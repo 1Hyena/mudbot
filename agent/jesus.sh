@@ -235,8 +235,6 @@ do
         ((FRAME++))
     elif [ "${exit_code}" -eq "0" ]; then
         if [ "${byte-}" = $'\n' ]; then
-            #printf "%s\n" "${line}" >/dev/stderr
-
             if [ ! -z "${capturing}" ] ; then
                 if [[ ${line} == "You tell yourself "* ]] && [[ ${line} == *"newline"* ]]; then
                     line=" "
@@ -254,8 +252,8 @@ do
                 utc_min=`date +%s`
                 ((utc_min/=60))
 
-                timestamp=`date`
-                pagebuf=`printf "%s\n%s" "${timestamp}" "${pagebuf}"`
+                datebuf=`date +"${DATE_FORMAT}"`
+                pagebuf=`printf "%s\n%s" "${datebuf}" "${pagebuf}"`
 
                 html=`printf "%s" "${pagebuf}" | ansi2html -s mint-terminal`
                 auth=`printf "%s%s%s" "${html}" "${CAM_AUTH}" "${utc_min}" | sha256sum | head -c 64`
