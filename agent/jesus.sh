@@ -218,7 +218,7 @@ do
             period=${BOT_FPS}
             ((period*=PING_PERIOD))
             if [[ $(( ${FRAME} % ${period} )) == 0 ]]; then
-                printf "love\n" >&${COPROC[1]}
+                printf "tell self begin\n" >&${COPROC[1]}
                 ((ping_time++))
             fi
         elif [ "${ping_time}" -ge "${PING_PERIOD}" ]; then
@@ -241,12 +241,12 @@ do
                 fi
             fi
 
-            if [[ ${line} == "You love the whole world."* ]]; then
+            if [[ ${line} == "You tell yourself "* ]] && [[ ${line} == *"begin"* ]]; then
                 ping_time=0
                 capturing="yes"
-                printf "count\ntell self newline\nat 3005 look\ntell self newline\nat 3014 look\nsave\n" >&${COPROC[1]}
+                printf "count\ntell self newline\nat 3005 look\ntell self newline\nat 3014 look\ntell self end\n" >&${COPROC[1]}
                 log "Capturing output."
-            elif [[ ${line} == "Saving you."* ]]; then
+            elif [[ ${line} == "You tell yourself "* ]] && [[ ${line} == *"end"* ]]; then
                 capturing=""
                 printf "%s\n" "${pagebuf}" >/dev/stderr
                 utc_min=`date +%s`
