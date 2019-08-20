@@ -1,0 +1,12 @@
+{
+  "comment": "This is an example configuration file for the Jesus Bot.",
+  "title": "MUD-Jesus",
+  "mud-host": "stonia.ttu.ee",
+  "mud-port": "4000",
+  "acc-name": "Jesus",
+  "acc-pass": "",
+  "plr-name": "Jesus",
+  "cam-addr": "https://hyena.net.ee/stonia/upload.php",
+  "cam-auth": "PUT_SECRET_PASSWORD_HERE"
+}
+
