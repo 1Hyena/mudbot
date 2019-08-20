@@ -1,2 +1,3 @@
-# MudCam
-Linux shell script for a bot that periodically captures data from a MUD server
+# MudBot
+General purpose set of Linux shell scripts for the implementation of MUD bots.
+
