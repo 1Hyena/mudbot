@@ -17,7 +17,7 @@ ACC_NAME=""
 PLR_NAME=""
 CAM_ADDR=""
 CAM_AUTH=""
-PING_PERIOD=30
+PING_PERIOD=10
 
 log() {
     now=`date +"${DATE_FORMAT}"`
