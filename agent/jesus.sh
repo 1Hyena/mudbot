@@ -18,6 +18,8 @@ PLR_NAME=""
 CAM_ADDR=""
 CAM_AUTH=""
 CAM_HASH=""
+MIN_CHAR=10
+MAX_CHAR=6000
 PING_PERIOD=10
 
 log() {
@@ -243,9 +245,10 @@ do
             fi
 
             if [[ ${line} == "You tell yourself "* ]] && [[ ${line} == *"begin"* ]]; then
+                at=$(($MIN_CHAR + RANDOM % $MAX_CHAR))
                 ping_time=0
                 capturing="yes"
-                printf "count\ntell self newline\nat 3005 look\ntell self newline\nat 3014 look\ntell self end\n" >&${COPROC[1]}
+                printf "count\ntell self newline\nat 3005 look\ntell self newline\nat %s. look\ntell self newline\nat 3014 look\ntell self end\n" "${at}" >&${COPROC[1]}
                 log "Capturing output."
             elif [[ ${line} == "You tell yourself "* ]] && [[ ${line} == *"end"* ]]; then
                 capturing=""
