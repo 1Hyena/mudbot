@@ -322,9 +322,9 @@ do
                     log "Skipping a hiding character: ${line}"
                 elif [[ ${line} != "No such location."* ]] ; then
                     if [ ! -z "${line}" ] ; then
-                        pagebuf=`printf "%s\n%s" "${pagebuf}" "${line}"`
+                        pagebuf=$(printf "%s\n%s" "${pagebuf}" "${line}")
                     else
-                        pagebuf=`printf "%s\n " "${pagebuf}"
+                        pagebuf=$(printf "%s\n " "${pagebuf}")
                     fi
                 fi
             fi
