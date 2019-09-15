@@ -287,10 +287,35 @@ do
                 pagebuf=""
             elif [[ ${line} == "[ LOG ::"* ]] ; then
                 log "${line}"
+                if [[ ${line} == *"(PK)"* ]] && [[ ${line} == *"killed by"* ]]; then
+                    # Someone was killed by another player. Let's turn our extra
+                    # camera to the room where this happened.
+
+                    room_vnum=$(line#*# | cut -f 1 -d " ")
+
+                    if [ ! -z "${room_vnum##*[!0-9]*}" ] ; then
+                        log "Turning the extra camera to room #${room_vnum}."
+                        EXTRA_CAM="${room_vnum}"
+                    fi
+                fi
+            elif [[ ${line} == "Hyena"* ]] ; then # Debug segment, remove this
+                log "${line}"
+                if [[ ${line} == *"(PK)"* ]] && [[ ${line} == *"killed by"* ]]; then
+                    # Someone was killed by another player. Let's turn our extra
+                    # camera to the room where this happened.
+
+                    room_vnum=$(line#*# | cut -f 1 -d " ")
+
+                    if [ ! -z "${room_vnum##*[!0-9]*}"    ] \
+                    && [ "${room_vnum}" != "${EXTRA_CAM}" ] ; then
+                        log "Turning the extra camera to room #${room_vnum}."
+                        EXTRA_CAM="${room_vnum}"
+                    fi
+                fi
             elif [ ! -z "${capturing}" ] ; then
                 hexval=$(xxd -p <<< "${line}" | tr -d '\n')
 
-                if [[ ${hexval} == "1b5b313b33336d1b5b306d281b5b313b33306d48696465"* ]] ; then
+                if [[ ${hexval} == *"1b5b313b33336d1b5b306d281b5b313b33306d48696465"* ]] ; then
                     # The above matches *[1;33m*[0m(*[1;30mHide where * is ESC.
                     log "Skipping a hiding character: ${line}"
                 elif [[ ${line} != "No such location."* ]] ; then
