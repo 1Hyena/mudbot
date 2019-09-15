@@ -276,6 +276,8 @@ do
                 fi
 
                 pagebuf=""
+            elif [[ ${line} == "[ LOG ::"* ]] ; then
+                log "${line}"
             else
                 if [ ! -z "${capturing}" ] ; then
                     pagebuf=`printf "%s\n%s" "${pagebuf}" "${line}"`
