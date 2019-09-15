@@ -18,6 +18,7 @@ PLR_NAME=""
 CAM_ADDR=""
 CAM_AUTH=""
 CAM_HASH=""
+LOG_TEXT=""
 MIN_CHAR=10
 MAX_CHAR=6000
 PING_PERIOD=10
@@ -273,6 +274,8 @@ do
             elif [[ ${line} == "You tell yourself "* ]] && [[ ${line} == *"end"* ]]; then
                 capturing=""
 
+                pagebuf=$(printf "%s\n%s" "${pagebuf}" "${LOG_TEXT}")
+
                 cam_hash=`printf "%s" "${pagebuf}" | sha256sum | head -c 64`
                 if [[ ${cam_hash} != ${CAM_HASH} ]] ; then
                     printf "%s\n" "${pagebuf}" >/dev/stderr
@@ -304,6 +307,9 @@ do
             elif [[ ${line} == "[ LOG ::"* ]] || [[ ${line} == " Hyena test"* ]]
             then
                 log "${line}"
+
+                LOG_TEXT=(printf "%s\n%s" "${line}" "${LOG_TEXT}" | head -n 999)
+
                 if [[ ${line} == *"(PK)"* ]] && [[ ${line} == *"killed by"* ]]; then
                     # Someone was killed by another player. Let's turn our extra
                     # camera to the room where this happened.
