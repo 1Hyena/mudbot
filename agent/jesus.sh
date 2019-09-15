@@ -282,12 +282,13 @@ do
                 log "${line}"
 
             elif [ ! -z "${capturing}" ] ; then
-                if [[ ${line} == "\x1b[1;33m\x1b[0m(\x1b[1;30mHide\x1b[0m)"* ]] ; then
+                hexval=$(xxd -p <<< "${line}" | tr -d '\n')
+
+                if [[ ${hexval} == "1b5b313b33336d1b5b306d281b5b313b33306d48696465"* ]] ; then
+                    # The above matches *[1;33m*[0m(*[1;30mHide where * is ESC.
                     log "Skipping a hiding character: ${line}"
                 else
                     pagebuf=`printf "%s\n%s" "${pagebuf}" "${line}"`
-                    hexval=$(xxd -p <<< "${line}" | tr -d '\n')
-                    log "${line} => ${hexval}"
                 fi
             fi
 
