@@ -252,7 +252,18 @@ do
 
                 ping_time=0
                 capturing="yes"
-                printf "count\ntell self newline\nat 3005 look\ntell self newline\nat 3014 look\n\ntell self newline\nat %s. look\ntell self end\n" "${EXTRA_CAM}" >&${COPROC[1]}
+                printf "count\ntell self newline\n" >&${COPROC[1]}
+                printf "at 3005 look\ntell self newline\n" >&${COPROC[1]}
+                printf "at 3014 look\ntell self newline\n" >&${COPROC[1]}
+
+                at=$(cut -d "#" -f 2 <<< "$EXTRA_CAM")
+
+                if [[ ${EXTRA_CAM} == "#"* ]]; then
+                    printf "at %s look\ntell self end\n" "${at}" >&${COPROC[1]}
+                else
+                    printf "at %s. look\ntell self end\n" "${at}" >&${COPROC[1]}
+                fi
+
                 log "Capturing output."
             elif [[ ${line} == "You tell yourself "* ]] && [[ ${line} == *"end"* ]]; then
                 capturing=""
@@ -285,20 +296,8 @@ do
                 fi
 
                 pagebuf=""
-            elif [[ ${line} == "[ LOG ::"* ]] ; then
-                log "${line}"
-                if [[ ${line} == *"(PK)"* ]] && [[ ${line} == *"killed by"* ]]; then
-                    # Someone was killed by another player. Let's turn our extra
-                    # camera to the room where this happened.
-
-                    room_vnum=$(line#*# | cut -f 1 -d " ")
-
-                    if [ ! -z "${room_vnum##*[!0-9]*}" ] ; then
-                        log "Turning the extra camera to room #${room_vnum}."
-                        EXTRA_CAM="${room_vnum}"
-                    fi
-                fi
-            elif [[ ${line} == " Hyena"* ]] ; then # Debug segment, remove this
+            elif [[ ${line} == "[ LOG ::"* ]] || [[ ${line} == " Hyena test"* ]]
+            then
                 log "${line}"
                 if [[ ${line} == *"(PK)"* ]] && [[ ${line} == *"killed by"* ]]; then
                     # Someone was killed by another player. Let's turn our extra
@@ -306,10 +305,10 @@ do
 
                     room_vnum=$(printf "%s" "${line#*#}" | cut -f 1 -d " ")
 
-                    if [ ! -z "${room_vnum##*[!0-9]*}"    ] \
-                    && [ "${room_vnum}" != "${EXTRA_CAM}" ] ; then
+                    if [ ! -z "${room_vnum##*[!0-9]*}"     ] \
+                    && [ "#${room_vnum}" != "${EXTRA_CAM}" ] ; then
                         log "Turning the extra camera to room #${room_vnum}."
-                        EXTRA_CAM="${room_vnum}"
+                        EXTRA_CAM="#${room_vnum}"
                     fi
                 fi
             elif [ ! -z "${capturing}" ] ; then
