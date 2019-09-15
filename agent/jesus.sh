@@ -252,8 +252,6 @@ do
 
                 cam_hash=`printf "%s" "${pagebuf}" | sha256sum | head -c 64`
                 if [[ ${cam_hash} != ${CAM_HASH} ]] ; then
-                    CAM_HASH="${cam_hash}"
-
                     printf "%s\n" "${pagebuf}" >/dev/stderr
                     utc_min=`date +%s`
                     ((utc_min/=60))
@@ -269,7 +267,11 @@ do
                     response=`printf "%s" "${html}" | curl -s --header "X-Auth: ${auth}" -X POST --data-binary @- "${CAM_ADDR}"`
 
                     if [ ! -z "${response}" ] ; then
-                        log "${response}"
+                        if [[ ${response} != ${auth} ]] ; then
+                            log "${response}"
+                        else
+                            CAM_HASH="${cam_hash}"
+                        fi
                     fi
                 else
                     log "Nothing has changed."
