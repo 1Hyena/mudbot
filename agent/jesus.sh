@@ -304,7 +304,7 @@ do
                     # Someone was killed by another player. Let's turn our extra
                     # camera to the room where this happened.
 
-                    room_vnum=$(line#*# | cut -f 1 -d " ")
+                    room_vnum=$(printf "%s" "${line#*#}" | cut -f 1 -d " ")
 
                     if [ ! -z "${room_vnum##*[!0-9]*}"    ] \
                     && [ "${room_vnum}" != "${EXTRA_CAM}" ] ; then
