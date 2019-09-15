@@ -274,7 +274,7 @@ do
             elif [[ ${line} == "You tell yourself "* ]] && [[ ${line} == *"end"* ]]; then
                 capturing=""
 
-                pagebuf=$(printf "%s\n%s" "${pagebuf}" "${LOG_TEXT}")
+                pagebuf=$(printf "%s\n \n%s" "${pagebuf}" "${LOG_TEXT}")
 
                 cam_hash=`printf "%s" "${pagebuf}" | sha256sum | head -c 64`
                 if [[ ${cam_hash} != ${CAM_HASH} ]] ; then
