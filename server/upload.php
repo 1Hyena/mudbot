@@ -32,7 +32,12 @@ if (strlen($posthash) !== 64) {
 
 if ($posthash === $postauth) {
     $postdata = str_replace("<!--<title></title>-->", '<title></title>', $postdata);
-    $postdata = str_replace("<title></title>", '<title>StoCam</title><META HTTP-EQUIV="refresh" CONTENT="10">', $postdata);
+    $postdata = str_replace(
+        "<title></title>",
+        '<title>StoCam</title>'.
+        '<script type="text/javascript" src="live.js"></script>',
+        $postdata
+    );
 
     $fp = fopen("index.html", "w") or die("Unable to open file!");
     fwrite($fp, $postdata);

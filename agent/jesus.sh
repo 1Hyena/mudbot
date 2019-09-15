@@ -17,6 +17,7 @@ ACC_NAME=""
 PLR_NAME=""
 CAM_ADDR=""
 CAM_AUTH=""
+CAM_HASH=""
 PING_PERIOD=10
 
 log() {
@@ -248,25 +249,33 @@ do
                 log "Capturing output."
             elif [[ ${line} == "You tell yourself "* ]] && [[ ${line} == *"end"* ]]; then
                 capturing=""
-                printf "%s\n" "${pagebuf}" >/dev/stderr
-                utc_min=`date +%s`
-                ((utc_min/=60))
 
-                datebuf=`date +"${DATE_FORMAT}"`
-                pagebuf=`printf "%s\n%s" "${datebuf}" "${pagebuf}"`
+                cam_hash=`printf "%s" "${pagebuf}" | sha256sum | head -c 64`
+                if [[ ${cam_hash} != ${CAM_HASH} ]] ; then
+                    CAM_HASH="${cam_hash}"
 
-                html=`printf "%s" "${pagebuf}" | ansi2html -s mint-terminal`
-                auth=`printf "%s%s%s" "${html}" "${CAM_AUTH}" "${utc_min}" | sha256sum | head -c 64`
-                size=`printf "%s" "${html}" | wc --bytes`
+                    printf "%s\n" "${pagebuf}" >/dev/stderr
+                    utc_min=`date +%s`
+                    ((utc_min/=60))
 
-                log "Uploading the HTML (${size} bytes)."
-                response=`printf "%s" "${html}" | curl -s --header "X-Auth: ${auth}" -X POST --data-binary @- "${CAM_ADDR}"`
+                    datebuf=`date +"${DATE_FORMAT}"`
+                    pagebuf=`printf "%s\n%s" "${datebuf}" "${pagebuf}"`
+
+                    html=`printf "%s" "${pagebuf}" | ansi2html -s mint-terminal`
+                    auth=`printf "%s%s%s" "${html}" "${CAM_AUTH}" "${utc_min}" | sha256sum | head -c 64`
+                    size=`printf "%s" "${html}" | wc --bytes`
+
+                    log "Uploading the HTML (${size} bytes)."
+                    response=`printf "%s" "${html}" | curl -s --header "X-Auth: ${auth}" -X POST --data-binary @- "${CAM_ADDR}"`
+
+                    if [ ! -z "${response}" ] ; then
+                        log "${response}"
+                    fi
+                else
+                    log "Nothing has changed."
+                fi
 
                 pagebuf=""
-
-                if [ ! -z "${response}" ] ; then
-                    log "${response}"
-                fi
             else
                 if [ ! -z "${capturing}" ] ; then
                     pagebuf=`printf "%s\n%s" "${pagebuf}" "${line}"`
