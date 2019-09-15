@@ -324,7 +324,7 @@ do
                     if [ ! -z "${line}" ] ; then
                         pagebuf=$(printf "%s\n%s" "${pagebuf}" "${line}")
                     else
-                        pagebuf=$(printf "%s\n " "${pagebuf}")
+                        pagebuf=$(printf "%s\n\1b[0m" "${pagebuf}")
                     fi
                 fi
             fi
