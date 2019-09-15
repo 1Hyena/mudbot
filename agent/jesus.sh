@@ -179,7 +179,12 @@ fi
 
 printf "%s\n" "${ACC_NAME}" >&${COPROC[1]}
 printf "%s\n" "${ACC_PASS}" >&${COPROC[1]}
-printf "play\n%s\n \n \nset prompt off\n" "${PLR_NAME}" >&${COPROC[1]}
+printf "play\n%s\n \n \n" "${PLR_NAME}" >&${COPROC[1]}
+printf "set prompt off\n" "${PLR_NAME}" >&${COPROC[1]}
+printf "set compact off\n" "${PLR_NAME}" >&${COPROC[1]}
+printf "set autoexit on\n" "${PLR_NAME}" >&${COPROC[1]}
+printf "set colour on\n" "${PLR_NAME}" >&${COPROC[1]}
+printf "set combine on\n" "${PLR_NAME}" >&${COPROC[1]}
 
 FRAME=0
 READ_TIMEOUT=`bc <<< "scale = 3; 1 / ${BOT_FPS}"`
@@ -321,12 +326,7 @@ do
                     # and then containing '*[0m(*[1;30mHide' where * is ESC.
                     log "Skipping a hiding character: ${line}"
                 elif [[ ${line} != "No such location."* ]] ; then
-                    if [ ! -z "${line}" ] ; then
-                        pagebuf=$(printf "%s\n%s" "${pagebuf}" "${line}")
-                    else
-                        pagebuf=$(printf "%s\n_" "${pagebuf}")
-                    fi
-                    #log "${hexval} => ${line}"
+                    pagebuf=$(printf "%s\n%s" "${pagebuf}" "${line}")
                 fi
             fi
 
