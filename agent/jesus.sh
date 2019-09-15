@@ -298,7 +298,7 @@ do
                         EXTRA_CAM="${room_vnum}"
                     fi
                 fi
-            elif [[ ${line} == "Hyena"* ]] ; then # Debug segment, remove this
+            elif [[ ${line} == " Hyena"* ]] ; then # Debug segment, remove this
                 log "${line}"
                 if [[ ${line} == *"(PK)"* ]] && [[ ${line} == *"killed by"* ]]; then
                     # Someone was killed by another player. Let's turn our extra
