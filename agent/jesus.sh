@@ -321,7 +321,11 @@ do
                     # and then containing '*[0m(*[1;30mHide' where * is ESC.
                     log "Skipping a hiding character: ${line}"
                 elif [[ ${line} != "No such location."* ]] ; then
-                    pagebuf=`printf "%s\n%s" "${pagebuf}" "${line}"`
+                    if [ ! -z "${line}" ] ; then
+                        pagebuf=`printf "%s\n%s" "${pagebuf}" "${line}"`
+                    else
+                        pagebuf=`printf "%s\n " "${pagebuf}"
+                    fi
                 fi
             fi
 
