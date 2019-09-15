@@ -308,7 +308,7 @@ do
             then
                 log "${line}"
 
-                LOG_TEXT=(printf "%s\n%s" "${line}" "${LOG_TEXT}" | head -n 999)
+                LOG_TEXT=$(printf "%s\n%s" "${line}" "${LOG_TEXT}" | head -n 999)
 
                 if [[ ${line} == *"(PK)"* ]] && [[ ${line} == *"killed by"* ]]; then
                     # Someone was killed by another player. Let's turn our extra
