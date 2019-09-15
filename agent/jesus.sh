@@ -287,14 +287,13 @@ do
                 pagebuf=""
             elif [[ ${line} == "[ LOG ::"* ]] ; then
                 log "${line}"
-
             elif [ ! -z "${capturing}" ] ; then
                 hexval=$(xxd -p <<< "${line}" | tr -d '\n')
 
                 if [[ ${hexval} == "1b5b313b33336d1b5b306d281b5b313b33306d48696465"* ]] ; then
                     # The above matches *[1;33m*[0m(*[1;30mHide where * is ESC.
                     log "Skipping a hiding character: ${line}"
-                else
+                elif [[ ${line} != "No such location."* ]] ; then
                     pagebuf=`printf "%s\n%s" "${pagebuf}" "${line}"`
                 fi
             fi
