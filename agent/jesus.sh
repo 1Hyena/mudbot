@@ -258,7 +258,9 @@ do
 
                 at=$(cut -d "#" -f 2 <<< "$EXTRA_CAM")
 
-                if [[ ${EXTRA_CAM} == "#"* ]]; then
+                log "AT: ${at}"
+
+                if [[ "${EXTRA_CAM}" == "#"* ]]; then
                     printf "at %s look\ntell self end\n" "${at}" >&${COPROC[1]}
                 else
                     printf "at %s. look\ntell self end\n" "${at}" >&${COPROC[1]}
