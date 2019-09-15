@@ -324,8 +324,9 @@ do
                     if [ ! -z "${line}" ] ; then
                         pagebuf=$(printf "%s\n%s" "${pagebuf}" "${line}")
                     else
-                        pagebuf=$(printf "%s\n\1b[0m" "${pagebuf}")
+                        pagebuf=$(printf "%s\n_" "${pagebuf}")
                     fi
+                    log "${hexval} => ${line}"
                 fi
             fi
 
