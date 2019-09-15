@@ -280,8 +280,11 @@ do
                 pagebuf=""
             elif [[ ${line} == "[ LOG ::"* ]] ; then
                 log "${line}"
-            else
-                if [ ! -z "${capturing}" ] ; then
+
+            elif [ ! -z "${capturing}" ] ; then
+                if [[ ${line} == "\e[1;33m\e[0m(\e[1;30mHide\e[0m)"* ]] ; then
+                    log "Skipping a hiding character: ${line}"
+                else
                     pagebuf=`printf "%s\n%s" "${pagebuf}" "${line}"`
                 fi
             fi
