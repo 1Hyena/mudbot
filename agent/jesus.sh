@@ -282,7 +282,7 @@ do
                 log "${line}"
 
             elif [ ! -z "${capturing}" ] ; then
-                if [[ ${line} == "\e[1;33m\e[0m(\e[1;30mHide\e[0m)"* ]] ; then
+                if [[ ${line} == "\x1b[1;33m\x1b[0m(\x1b[1;30mHide\x1b[0m)"* ]] ; then
                     log "Skipping a hiding character: ${line}"
                 else
                     pagebuf=`printf "%s\n%s" "${pagebuf}" "${line}"`
