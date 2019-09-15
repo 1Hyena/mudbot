@@ -286,7 +286,7 @@ do
                     log "Skipping a hiding character: ${line}"
                 else
                     pagebuf=`printf "%s\n%s" "${pagebuf}" "${line}"`
-                    hexval=$(xxd -p | tr -d '\n' <<< "${line}")
+                    hexval=$(xxd -p <<< "${line}" | tr -d '\n')
                     log "${line} => ${hexval}"
                 fi
             fi
