@@ -21,6 +21,7 @@ CAM_HASH=""
 MIN_CHAR=10
 MAX_CHAR=6000
 PING_PERIOD=10
+EXTRA_CAM=0
 
 log() {
     now=`date +"${DATE_FORMAT}"`
@@ -245,10 +246,13 @@ do
             fi
 
             if [[ ${line} == "You tell yourself "* ]] && [[ ${line} == *"begin"* ]]; then
-                at=$(($MIN_CHAR + RANDOM % $MAX_CHAR))
+                if (( RANDOM % 10 == 0 )); then
+                    EXTRA_CAM=$(($MIN_CHAR + RANDOM % $MAX_CHAR))
+                fi
+
                 ping_time=0
                 capturing="yes"
-                printf "count\ntell self newline\nat 3005 look\ntell self newline\nat %s. look\ntell self newline\nat 3014 look\ntell self end\n" "${at}" >&${COPROC[1]}
+                printf "count\ntell self newline\nat 3005 look\ntell self newline\nat 3014 look\n\ntell self newline\nat %s. look\ntell self end\n" "${EXTRA_CAM}" >&${COPROC[1]}
                 log "Capturing output."
             elif [[ ${line} == "You tell yourself "* ]] && [[ ${line} == *"end"* ]]; then
                 capturing=""
