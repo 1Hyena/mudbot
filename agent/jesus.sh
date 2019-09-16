@@ -338,17 +338,19 @@ do
                 elif [[ ${line} == *"logged out. ]" ]] ; then
                     redact="yes"
                 elif [[ ${line} == *"Jesus:"* ]] ; then
-                    redact="yes"
+                    line=""
                 elif [[ ${line} == *"Hyena:"* ]] ; then
-                    redact="yes"
+                    line=""
                 fi
 
-                if [ ! -z "${redact}" ] ; then
-                    line="(log redacted)"
-                fi
+                if [ ! -z "${line}" ] ; then
+                    if [ ! -z "${redact}" ] ; then
+                        line="(log redacted)"
+                    fi
 
-                datebuf=`date +"${DATE_FORMAT}"`
-                LOG_TEXT=$(printf "%s :: %s\n%s" "${datebuf}" "${line}" "${LOG_TEXT}" | head -n 999)
+                    datebuf=`date +"${DATE_FORMAT}"`
+                    LOG_TEXT=$(printf "%s :: %s\n%s" "${datebuf}" "${line}" "${LOG_TEXT}" | head -n 999)
+                fi
             elif [ ! -z "${capturing}" ] ; then
                 hexval=$(xxd -p <<< "${line}" | tr -d '\n')
 
