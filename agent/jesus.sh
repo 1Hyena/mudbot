@@ -310,7 +310,7 @@ do
             then
                 log "${line}"
 
-                LOG_TEXT=$(printf "%s\n%s" "${line}" "${LOG_TEXT}" | head -n 999)
+                redact=""
 
                 if [[ ${line} == *"(PK)"* ]] && [[ ${line} == *"killed by"* ]]; then
                     # Someone was killed by another player. Let's turn our extra
@@ -323,7 +323,30 @@ do
                         log "Turning the extra camera to room #${room_vnum}."
                         EXTRA_CAM="#${room_vnum}"
                     fi
+                elif [[ ${line} == *"(MOB). ]" ]] && [[ ${line} == *"killed by"* ]]; then
+                    redact="yes"
+                elif [[ ${line} == *"). ]" ]] && [[ ${line} == *"has connected"* ]]; then
+                    redact="yes"
+                elif [[ ${line} == *"). ]" ]] && [[ ${line} == *"has autorent"* ]]; then
+                    redact="yes"
+                elif [[ ${line} == *"). ]" ]] && [[ ${line} == *"has rent"* ]]; then
+                    redact="yes"
+                elif [[ ${line} == *"). ]" ]] && [[ ${line} == *"created a new character"* ]]; then
+                    redact="yes"
+                elif [[ ${line} == *"logged in. ]" ]] ; then
+                    redact="yes"
+                elif [[ ${line} == *"logged out. ]" ]] ; then
+                    redact="yes"
+                elif [[ ${line} == *"Jesus:"* ]] ; then
+                    redact="yes"
                 fi
+
+                if [ ! -z "${redact}" ] ; then
+                    line="(log redacted)"
+                fi
+
+                datebuf=`date +"${DATE_FORMAT}"`
+                LOG_TEXT=$(printf "%s :: %s\n%s" "${datebuf}" "${line}" "${LOG_TEXT}" | head -n 999)
             elif [ ! -z "${capturing}" ] ; then
                 hexval=$(xxd -p <<< "${line}" | tr -d '\n')
 
