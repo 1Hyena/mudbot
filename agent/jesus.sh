@@ -323,21 +323,23 @@ do
                         log "Turning the extra camera to room #${room_vnum}."
                         EXTRA_CAM="#${room_vnum}"
                     fi
-                elif [[ ${line} == *"(MOB). ]" ]] && [[ ${line} == *"killed by"* ]]; then
+                elif [[ ${line} == *"(MOB). ]"* ]] && [[ ${line} == *"killed by"* ]]; then
                     redact="yes"
-                elif [[ ${line} == *"). ]" ]] && [[ ${line} == *"has connected"* ]]; then
+                elif [[ ${line} == *"). ]"* ]] && [[ ${line} == *"has connected"* ]]; then
                     redact="yes"
-                elif [[ ${line} == *"). ]" ]] && [[ ${line} == *"has autorent"* ]]; then
+                elif [[ ${line} == *"). ]"* ]] && [[ ${line} == *"has autorent"* ]]; then
                     redact="yes"
-                elif [[ ${line} == *"). ]" ]] && [[ ${line} == *"has rent"* ]]; then
+                elif [[ ${line} == *"). ]"* ]] && [[ ${line} == *"has rent"* ]]; then
                     redact="yes"
-                elif [[ ${line} == *"). ]" ]] && [[ ${line} == *"created a new character"* ]]; then
+                elif [[ ${line} == *"). ]"* ]] && [[ ${line} == *"created a new character"* ]]; then
                     redact="yes"
-                elif [[ ${line} == *"logged in. ]" ]] ; then
+                elif [[ ${line} == *"logged in. ]"* ]] ; then
                     redact="yes"
-                elif [[ ${line} == *"logged out. ]" ]] ; then
+                elif [[ ${line} == *"logged out. ]"* ]] ; then
                     redact="yes"
                 elif [[ ${line} == *"Jesus:"* ]] ; then
+                    redact="yes"
+                elif [[ ${line} == *"Hyena:"* ]] ; then
                     redact="yes"
                 fi
 
