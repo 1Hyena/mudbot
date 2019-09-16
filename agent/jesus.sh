@@ -327,6 +327,8 @@ do
                     redact="yes"
                 elif [[ ${line} == *"). ]" ]] && [[ ${line} == *"has connected"* ]]; then
                     redact="yes"
+                elif [[ ${line} == *"). ]" ]] && [[ ${line} == *"has reconnected"* ]]; then
+                    redact="yes"
                 elif [[ ${line} == *"). ]" ]] && [[ ${line} == *"has autorent"* ]]; then
                     redact="yes"
                 elif [[ ${line} == *"). ]" ]] && [[ ${line} == *"has rent"* ]]; then
