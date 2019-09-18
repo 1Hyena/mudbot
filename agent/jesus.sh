@@ -350,8 +350,8 @@ do
                         line="(log redacted)"
                     fi
 
-                    datebuf=`date +"${DATE_FORMAT}"`
-                    LOG_TEXT=$(printf "%s :: %s\n%s" "${datebuf}" "${line}" "${LOG_TEXT}" | head -n 999)
+                    #datebuf=`date +"${DATE_FORMAT}"`
+                    #LOG_TEXT=$(printf "%s :: %s\n%s" "${datebuf}" "${line}" "${LOG_TEXT}" | head -n 999)
                 fi
             elif [ ! -z "${capturing}" ] ; then
                 hexval=$(xxd -p <<< "${line}" | tr -d '\n')
